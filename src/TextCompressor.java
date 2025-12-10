@@ -30,19 +30,31 @@
 public class TextCompressor {
     // TODO: Complete the compress() method
     private static void compress() {
-        TST newTST = new TST();
+        TST TST = new TST();
         String data = BinaryStdIn.readString();
         int index = 0;
+        String prefix = "";
+        int firstCode = 81;
+        int counter = 0;
         while (index < data.length()) {
             // prefix = longest coded word that matches text @ index
+            prefix = TST.getLongestPrefix(data, index);
+
+            // get the code for this prefix
+
             //write out that code
+            BinaryStdOut.write(prefix);
             //if possible, look ahead to the next character
-            //append that character to prefix
-            //associate prefix with the next code (if available)
-           // index += prefix.length
+            index += prefix.length();
+            if ((index) < data.length()) {
+                counter++;
+                //append that character to prefix
+                String nextString = prefix + data.charAt(index);
+                //associate prefix with the next code (if available)
+                TST.insert(nextString, firstCode + counter);
+            }
             //write out EOF and close
-
-
+            BinaryStdOut.write("EOF");
         }
         BinaryStdOut.close();
     }
