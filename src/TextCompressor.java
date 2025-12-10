@@ -28,17 +28,27 @@
  *  @author Zach Blick, David Lutch
  */
 public class TextCompressor {
-
+    // TODO: Complete the compress() method
     private static void compress() {
+        TST newTST = new TST();
+        String data = BinaryStdIn.readString();
+        int index = 0;
+        while (index < data.length()) {
+            // prefix = longest coded word that matches text @ index
+            //write out that code
+            //if possible, look ahead to the next character
+            //append that character to prefix
+            //associate prefix with the next code (if available)
+           // index += prefix.length
+            //write out EOF and close
 
-        // TODO: Complete the compress() method
 
+        }
         BinaryStdOut.close();
     }
 
+    // TODO: Complete the expand() method
     private static void expand() {
-
-        // TODO: Complete the expand() method
 
         BinaryStdOut.close();
     }
