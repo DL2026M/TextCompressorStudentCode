@@ -29,55 +29,66 @@
  */
 public class TextCompressor {
     private static final int EOF = 0x80;
-    // CONFIRM WITH MR. BLICK
-    // Max patterns is 176 as 80 of the patterns are chars (already set)
-    private static final int MAX_PATTERNS = 176;
-    private static final int COMPRESSED_BITS = 2;
+    private static final int COMPRESSED_BITS = 12;
+    private static final int MAX_PATTERNS = (1 << COMPRESSED_BITS);
+    private static final int STANDARD_ASCII = 128;
+
     private static void compress() {
         TST TST = new TST();
         String data = BinaryStdIn.readString();
         int index = 0;
         String prefix = "";
-        int prefixValue = 81;
-        int counter = 0;
+        int prefixValue = EOF + 1;
         int code;
+
+        for (char c = 0; c < STANDARD_ASCII; c++) {
+            String ascii = "" + c;
+            TST.insert(ascii, (int) c);
+        }
+
         while (index < data.length()) {
             // Prefix = longest coded word that matches text @ index
-            prefix = TST.getLongestPrefix(data.substring(index), index);
+            prefix = TST.getLongestPrefix(data, index);
             // Get the code for this prefix
             code = TST.lookup(prefix);
-            // If the code is associated with a prefix, write it out
-            if (code != -1) {
-                BinaryStdOut.write(code, COMPRESSED_BITS);
-            }
-            // If there isn't a code associated with the prefix, create one and write it out
-            if (code == -1) {
-                code = prefixValue + counter;
-                counter++;
-                TST.insert(prefix, code);
-                BinaryStdOut.write(code, COMPRESSED_BITS);
-                // IntelliJ suggestion: BinaryStdOut.write(data.substring(index), COMPRESSED_BITS);
-            }
-            // If possible, look ahead to the next character
+            BinaryStdOut.write(code, COMPRESSED_BITS);
+
             index += prefix.length();
-            if (index < data.length() || counter < MAX_PATTERNS) {
-                counter++;
+            if (index < data.length() && prefixValue < MAX_PATTERNS) {
                 // Append that character to prefix
-                String nextChar = prefix + data.charAt(index);
+                String nextString = prefix + data.charAt(index);
                 // Associate prefix with the next code (if available)
-                prefixValue += counter;
-                TST.insert(nextChar, prefixValue);
+                TST.insert(nextString, prefixValue);
+                prefixValue++;
             }
         }
         // Write out EOF and close
-        BinaryStdOut.write(EOF, 8);
+        BinaryStdOut.write(EOF, COMPRESSED_BITS);
         BinaryStdOut.close();
     }
 
     // TODO: Complete the expand() method
     private static void expand() {
+        String[] Map = new String[MAX_PATTERNS];
 
         BinaryStdOut.close();
+
+//        if (code != -1) {
+//            BinaryStdOut.write(code, COMPRESSED_BITS);
+//        }
+//        // If there isn't a code associated with the prefix, create one and write it out
+//        if (code == -1) {
+//            code = prefixValue + counter;
+//            counter++;
+//            TST.insert(prefix, code);
+//            BinaryStdOut.write(code, COMPRESSED_BITS);
+//            // IntelliJ suggestion: BinaryStdOut.write(data.substring(index), COMPRESSED_BITS);
+//
+//
+//        // Edge case
+//        // When expanding, if we see a code that doesn't exist yet, we know it must be the next code.
+//        // Its String is given to us by appending to our current prefix, p:
+//        // New String = p + p's first letter
     }
 
     public static void main(String[] args) {

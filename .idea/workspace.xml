@@ -4,9 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4c0fc687-5e81-4f2e-86c0-a00732202ab3" name="Changes" comment="Worked on compress during class">
+    <list default="true" id="4c0fc687-5e81-4f2e-86c0-a00732202ab3" name="Changes" comment="Tutorial work">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/WORK_LOG.md" beforeDir="false" afterPath="$PROJECT_DIR$/WORK_LOG.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/TextCompressor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/TextCompressor.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -95,7 +94,11 @@
       <workItem from="1765407321473" duration="339000" />
       <workItem from="1765412288340" duration="733000" />
       <workItem from="1765424877955" duration="7039000" />
-      <workItem from="1765476916289" duration="1848000" />
+      <workItem from="1765476916289" duration="2112000" />
+      <workItem from="1765479511949" duration="5000" />
+      <workItem from="1765479532250" duration="168000" />
+      <workItem from="1765484619017" duration="23000" />
+      <workItem from="1765484690753" duration="4267000" />
     </task>
     <task id="LOCAL-00001" summary="Work Log done :)">
       <option name="closed" value="true" />
@@ -113,7 +116,15 @@
       <option name="project" value="LOCAL" />
       <updated>1765389403469</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Tutorial work">
+      <option name="closed" value="true" />
+      <created>1765478782281</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1765478782281</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -122,6 +133,7 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Work Log done :)" />
     <MESSAGE value="Worked on compress during class" />
-    <option name="LAST_COMMIT_MESSAGE" value="Worked on compress during class" />
+    <MESSAGE value="Tutorial work" />
+    <option name="LAST_COMMIT_MESSAGE" value="Tutorial work" />
   </component>
 </project>
