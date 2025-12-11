@@ -28,34 +28,49 @@
  *  @author Zach Blick, David Lutch
  */
 public class TextCompressor {
-    // TODO: Complete the compress() method
+    private static final int EOF = 0x80;
+    // CONFIRM WITH MR. BLICK
+    // Max patterns is 176 as 80 of the patterns are chars (already set)
+    private static final int MAX_PATTERNS = 176;
+    private static final int COMPRESSED_BITS = 2;
     private static void compress() {
         TST TST = new TST();
         String data = BinaryStdIn.readString();
         int index = 0;
         String prefix = "";
-        int firstCode = 81;
+        int prefixValue = 81;
         int counter = 0;
+        int code;
         while (index < data.length()) {
-            // prefix = longest coded word that matches text @ index
-            prefix = TST.getLongestPrefix(data, index);
-
-            // get the code for this prefix
-
-            //write out that code
-            BinaryStdOut.write(prefix);
-            //if possible, look ahead to the next character
-            index += prefix.length();
-            if ((index) < data.length()) {
-                counter++;
-                //append that character to prefix
-                String nextString = prefix + data.charAt(index);
-                //associate prefix with the next code (if available)
-                TST.insert(nextString, firstCode + counter);
+            // Prefix = longest coded word that matches text @ index
+            prefix = TST.getLongestPrefix(data.substring(index), index);
+            // Get the code for this prefix
+            code = TST.lookup(prefix);
+            // If the code is associated with a prefix, write it out
+            if (code != -1) {
+                BinaryStdOut.write(code, COMPRESSED_BITS);
             }
-            //write out EOF and close
-            BinaryStdOut.write("EOF");
+            // If there isn't a code associated with the prefix, create one and write it out
+            if (code == -1) {
+                code = prefixValue + counter;
+                counter++;
+                TST.insert(prefix, code);
+                BinaryStdOut.write(code, COMPRESSED_BITS);
+                // IntelliJ suggestion: BinaryStdOut.write(data.substring(index), COMPRESSED_BITS);
+            }
+            // If possible, look ahead to the next character
+            index += prefix.length();
+            if (index < data.length() || counter < MAX_PATTERNS) {
+                counter++;
+                // Append that character to prefix
+                String nextChar = prefix + data.charAt(index);
+                // Associate prefix with the next code (if available)
+                prefixValue += counter;
+                TST.insert(nextChar, prefixValue);
+            }
         }
+        // Write out EOF and close
+        BinaryStdOut.write(EOF, 8);
         BinaryStdOut.close();
     }
 
