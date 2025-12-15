@@ -27,6 +27,9 @@
  *
  *  @author Zach Blick, David Lutch
  */
+
+// Note to Mr. Blick: I want to cite Diego Villegas for helping to explain expand() to me and helping me debug my expand
+// code to get it working (I was a bit confused, and he walked through it with me and helped fix my errors).
 public class TextCompressor {
     private static final int EOF = 0x80;
     private static final int COMPRESSED_BITS = 12;
@@ -47,22 +50,19 @@ public class TextCompressor {
         }
 
         while (index < data.length()) {
-            // Prefix = longest coded word that matches text @ index
             prefix = TST.getLongestPrefix(data, index);
-            // Get the code for this prefix
+            // Getting the code for this prefix
             code = TST.lookup(prefix);
             BinaryStdOut.write(code, COMPRESSED_BITS);
-
             index += prefix.length();
             if (index < data.length() && prefixValue < MAX_PATTERNS) {
                 // Append that character to prefix
                 String nextString = prefix + data.charAt(index);
-                // Associate prefix with the next code (if available)
+                // Associate prefix with the next code
                 TST.insert(nextString, prefixValue);
                 prefixValue++;
             }
         }
-        // Write out EOF and close
         BinaryStdOut.write(EOF, COMPRESSED_BITS);
         BinaryStdOut.close();
     }
@@ -70,22 +70,22 @@ public class TextCompressor {
     private static void expand() {
         String[] Map = new String[MAX_PATTERNS];
         int index = STANDARD_ASCII + 1;
-        // Might change to 128
-       for (int i = 0; i < STANDARD_ASCII; i++) {
-            Map[i] = "" + (char) i;
-        }
         int nextPrefix = BinaryStdIn.readInt(COMPRESSED_BITS);
         int prefix = 0;
-        //BinaryStdOut.write(prefix, COMPRESSED_BITS);
+
+        for (int i = 0; i < STANDARD_ASCII; i++) {
+            Map[i] = "" + (char) i;
+        }
+
         while (nextPrefix != EOF) {
             // This is the code we are going to look at right now
             prefix = nextPrefix;
             BinaryStdOut.write(Map[prefix]);
             // Getting the next prefix/code
             nextPrefix = BinaryStdIn.readInt(COMPRESSED_BITS);
-            // Edge case: When expanding, if we see a code that doesn't exist yet
+            // Edge case: If we see a code that doesn't exist yet when expanding
             if (Map[nextPrefix] == null) {
-                // Its string is given to us by appending to our current prefix, p: New String = p + p's first letter
+                // Its string is given to us by appending to our current prefix
                 String edgeCase = Map[prefix] + Map[prefix].charAt(0);
                 Map[nextPrefix] = edgeCase;
             }
