@@ -67,28 +67,35 @@ public class TextCompressor {
         BinaryStdOut.close();
     }
 
-    // TODO: Complete the expand() method
     private static void expand() {
         String[] Map = new String[MAX_PATTERNS];
-
+        int index = STANDARD_ASCII + 1;
+        // Might change to 128
+       for (int i = 0; i < STANDARD_ASCII; i++) {
+            Map[i] = "" + (char) i;
+        }
+        int nextPrefix = BinaryStdIn.readInt(COMPRESSED_BITS);
+        int prefix = 0;
+        //BinaryStdOut.write(prefix, COMPRESSED_BITS);
+        while (nextPrefix != EOF) {
+            // This is the code we are going to look at right now
+            prefix = nextPrefix;
+            BinaryStdOut.write(Map[prefix]);
+            // Getting the next prefix/code
+            nextPrefix = BinaryStdIn.readInt(COMPRESSED_BITS);
+            // Edge case: When expanding, if we see a code that doesn't exist yet
+            if (Map[nextPrefix] == null) {
+                // Its string is given to us by appending to our current prefix, p: New String = p + p's first letter
+                String edgeCase = Map[prefix] + Map[prefix].charAt(0);
+                Map[nextPrefix] = edgeCase;
+            }
+            else if (index < MAX_PATTERNS) {
+                String addedString = Map[prefix] + Map[nextPrefix].charAt(0);
+                Map[index] = addedString;
+            }
+            index++;
+        }
         BinaryStdOut.close();
-
-//        if (code != -1) {
-//            BinaryStdOut.write(code, COMPRESSED_BITS);
-//        }
-//        // If there isn't a code associated with the prefix, create one and write it out
-//        if (code == -1) {
-//            code = prefixValue + counter;
-//            counter++;
-//            TST.insert(prefix, code);
-//            BinaryStdOut.write(code, COMPRESSED_BITS);
-//            // IntelliJ suggestion: BinaryStdOut.write(data.substring(index), COMPRESSED_BITS);
-//
-//
-//        // Edge case
-//        // When expanding, if we see a code that doesn't exist yet, we know it must be the next code.
-//        // Its String is given to us by appending to our current prefix, p:
-//        // New String = p + p's first letter
     }
 
     public static void main(String[] args) {
